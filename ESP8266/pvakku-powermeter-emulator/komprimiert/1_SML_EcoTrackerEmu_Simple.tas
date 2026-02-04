@@ -5,9 +5,15 @@ p:mval2=0
 p:mval=0
 p:yval=0
 p:yval2=0
+p:rxind=1
+p:txind=1
+p:sel=0
+p:pwroffset=0
 t:t1=60
+rxpin=0
+txpin=0
 hr=0
-save=0
+power3=0
 res=0
 tmp=0
 cpwr=0
@@ -15,8 +21,19 @@ once=0
 header=""
 json=""
 >B
-=>sensor53 r
+sota("")
+rxpin=rxind-1
+txpin=txind-1
+->sensor53 r
 smlj=0
+if (pwroffset>200) {
+pwroffset=200
+}
+if (pwroffset<-200) {
+pwroffset=-200
+}
+#save
+svars
 #init
 dval=sml[2]
 dval2=sml[3]
@@ -24,23 +41,32 @@ mval=sml[2]
 mval2=sml[3]
 yval=sml[2]
 yval2=sml[3]
-->Backlog2 otaurl KEIN OTA UPGRADE VIA WEBSERVER!
 ->Backlog2 Timezone 99;TimeStd 0,0,10,1,3,60;TimeDst 0,0,3,1,2,120
-svars
+=#save
 >ah
 res=won(1 "/v1/json")
 >on1
-json="{\"power\":"+s(0cpwr)+",\"powerAvg\":"+s(0cpwr)+",\"energyCounterIn\":"+s(0sml[2]*1000)+",\"energyCounterOut\":"+s(0sml[3]*1000)+"}"
+json="{\"power\":"+s(0cpwr)+",\"powerAvg\":"+s(0power3)+",\"agePower\":1000,\"powerPhase1\":"+s(0sml[4])+",\"powerPhase2\":"+s(0sml[5])+",\"powerPhase3\":"+s(0sml[6])+",\"energyCounterOut\":"+s(0sml[3]*1000)+",\"energyCounterIn\":"+s(0sml[2]*1000)+",\"energyCounterInT1\":"+s(0sml[2]*1000)+"}"
 tmp=sl(json)
 header="HTTP/1.1 200 OK\r\nContent-Length: "+s(0tmp)+"\r\nContent-Type: application/json\r\n\r\n"
 wcs so(4)
 wcs %header%
 wcs %json%
 wcf
->S
-if (save==1) {
-save=0
+>C
+if eres==1 {
+->sensor53 r
 svars
+eres=0
+}
+>F
+fe("sml_ftask.tas")
+>S
+fe("sml_stask.tas")
+if ((chg[rxind]>0) or (chg[txind]>0)) {
+rxpin=rxind-1
+->sensor53 r
+=#save
 }
 if ((year<2020) or (sml[2]==0)) {
 print auf NTP/Zähler warten
@@ -61,21 +87,21 @@ if (day*month==1) {
 yval=sml[2]
 yval2=sml[3]
 }
-svars
+=#save
 }
 }
 if (once==0) {
-res=mdns("ecotracker-" "-" "everhome")
+mdns("ecotracker-" "-" "everhome")
 once=1
 }
 tmp=sml[1]-cpwr
 if (tmp>500) {
 cpwr=sml[1]-(tmp/2)
 } else {
-cpwr=sml[1]
+cpwr=sml[1]-pwroffset
 }
+power3=(0.9*power3)+((1-0.9)*cpwr)
 >W
-bu(save "gespeichert!" "Daten sofort speichern")
 Leistung (an Marstek Akku){m}%0cpwr% W
 Tagesverbrauch{m}%2(sml[2]-dval)% kWh
 Monatsverbrauch{m}%2(sml[2]-mval)% kWh
@@ -83,10 +109,10 @@ Jahresverbrauch{m}%2(sml[2]-yval)% kWh
 Tageseinspeisung{m}%2(sml[3]-dval2)% kWh
 Monatseinspeisung{m}%2(sml[3]-mval2)% kWh
 Jahreseinspeisung{m}%2(sml[3]-yval2)% kWh
-Uptime{m}%0uptime% min
+Uptime{m}%0(int(uptime/1440))% d %0(int((uptime%1440)/60))% h %0(uptime%60)% min
 $<center><span style="font-size:10px;">
-$Version 24.09.2025 (EcoTrackerEmuSimple) by ottelo.jimdo.de<br>
-$Credits to gemu2015 (Tasmota Script Dev)<br>
+$Version 04.02.2026 (EcoTrackerEmuSimple) by ottelo.jimdo.de<br>
+$und gemu2015 (ScriptEngine V%vers%)<br>
 $</span></center>
 >M 1
 +1,3,s,0,9600,MT175,1
