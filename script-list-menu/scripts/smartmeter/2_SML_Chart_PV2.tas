@@ -256,7 +256,9 @@ $var options = {
 $chartArea:{left:60,right:20,height:'75%%'},
 $legend:'none',
 $vAxis:{format:'# W'},
-$hAxis:{slantedTextAngle:45},
+$hAxis:{slantedText:true,slantedTextAngle:45,showTextEvery:60},
+$crosshair:{trigger:'both',orientation:'vertical',color:'#999'},
+$focusTarget:'category',
 $explorer:{actions:['dragToZoom','rightClickToReset']},
 $series: {0: {type: 'area'}},
 $title:'Leistung 1 Stunde [Watt]'
@@ -268,7 +270,9 @@ $var options = {
 $chartArea:{left:60,right:20,height:'75%%'},
 $legend:'none',
 $vAxis:{format:'# W'},
-$hAxis:{slantedTextAngle:45},
+$hAxis:{slantedText:true,slantedTextAngle:45,showTextEvery:60},
+$crosshair:{trigger:'both',orientation:'vertical',color:'#999'},
+$focusTarget:'category',
 $explorer:{actions:['dragToZoom', 'rightClickToReset']},
 $series: {0: {type: 'area'}},
 $title:'Leistung 24 Stunden [Watt]'
@@ -278,7 +282,7 @@ $gc(e)
 %=#dayprod
 %=#monthsub
 $<center><span style="font-size:10px;">
-$Version 05.03.2026 (PV2) by ottelo.jimdo.de & gemu2015 (ScriptEngine V%vers%)<br>
+$Version 23.08.2026 (PV2) by ottelo.jimdo.de & gemu2015 (ScriptEngine V%vers%)<br>
 $Hinweis: Alle Werte werden um Mitternacht gespeichert!<br>
 $1h Diagramm aktualisiert sich alle 5s, 24h Diagramm alle 60s.<br>
 $</span></center></div>

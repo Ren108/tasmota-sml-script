@@ -429,7 +429,9 @@ $legend:'none',
 ;$vAxis:{format:'# W',viewWindow:{max:%vn%}},   optional um per Slider Y-Achse Werte zu begrenzen, suche im Skript nach vn
 ;$vAxis:{format:'# W',viewWindow:{max:5000}},   optional um Y-Achse Werte auf 5kW zu begrenzen
 $vAxis:{format:'# W'},
-$hAxis:{slantedTextAngle:45},
+$hAxis:{slantedText:true,slantedTextAngle:45,showTextEvery:30},
+$crosshair:{trigger:'both',orientation:'vertical',color:'#999'},
+$focusTarget:'category',
 $explorer:{actions:['dragToZoom','rightClickToReset']},
 $series: {0: {type: 'area'}},
 $title:'Leistung 4 Stunden [Watt]'
@@ -445,7 +447,9 @@ $legend:'none',
 ;$vAxis:{format:'# W',viewWindow:{max:%vn%}},   optional um per Slider Y-Achse Werte zu begrenzen, suche im Skript nach vn
 ;$vAxis:{format:'# W',viewWindow:{max:5000}},   optional um Y-Achse Werte auf 5kW zu begrenzen
 $vAxis:{format:'# W'},
-$hAxis:{slantedTextAngle:45},
+$hAxis:{slantedText:true,slantedTextAngle:45,showTextEvery:60},
+$crosshair:{trigger:'both',orientation:'vertical',color:'#999'},
+$focusTarget:'category',
 $explorer:{actions:['dragToZoom', 'rightClickToReset']},
 $series: {0: {type: 'area'}},
 $title:'Leistung 24 Stunden [Watt]'
@@ -467,7 +471,7 @@ $gc(e)
 %=#monthsub
 
 $<center><span style="font-size:10px;">
-$Version 06.03.2026 (PV3) by ottelo.jimdo.de & gemu2015 (ScriptEngine V%vers%)<br>
+$Version 23.08.2026 (PV3) by ottelo.jimdo.de & gemu2015 (ScriptEngine V%vers%)<br>
 $Hinweis: Alle Werte werden um Mitternacht gespeichert!<br>
 $4h Diagramm aktualisiert sich alle 30s, 24h Diagramm alle 60s.<br>
 $</span></center></div>
